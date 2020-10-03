@@ -10,29 +10,32 @@ import {
   Button,
   Paper,
 } from "@material-ui/core";
+const countryInfo = require("../raw/country_list.json");
 
+//Fn. :  input param is url (string) and returns fetched data for the same
 const fetchJson = async (url) => {
   const response = await fetch(url);
   return response.json();
 };
 
+//Fn. : input params is object, checks if the object is empty and returns
 const checkEmpObj = (obj) => {
   const isEmptyObj =
     Object.keys(obj).length === 0 && obj.constructor === Object;
   return isEmptyObj;
 };
 
+//Renders Homepage : After private Route verification through local storage, contains currency conversion and logout view
 const HomePage = () => {
   const history = useHistory();
   const [currencyInfo, setCurrencyInfo] = useState({});
-
   const [userCurrInfo, setUserCurrInfo] = useState({
     inputCurr: "",
     outputCurr: "",
-    conversionAmt: 0,
-    convertAmt: 0,
+    conversionAmt: 1000,
   });
 
+  // set the currency information usin the API on Mount
   useEffect(() => {
     fetchJson("https://api.exchangeratesapi.io/latest").then((data) =>
       setCurrencyInfo(data)
@@ -53,11 +56,22 @@ const HomePage = () => {
   };
   return !checkEmpObj(currencyInfo) ? (
     <div>
-      <div style={{ position: "absolute", right: "0", top: "0" }}>
+      <div>
+        <h1
+          style={{
+            margin: 15,
+            color: "#ff4d82",
+            position: "absolute",
+            top: "0",
+            left: "0"
+          }}
+        >
+          Currency Convertor HomePage
+        </h1>
         <Button
           variant="contained"
           color="primary"
-          style={{ margin: 10 }}
+          style={{ margin: 10, position: "absolute", right: "0", top: "0" }}
           onClick={logout}
         >
           Logout
@@ -66,11 +80,11 @@ const HomePage = () => {
       <Paper elevation={3}>
         <div>
           <h4 style={{ margin: 15, color: "#ff4d82" }}>
-            {`Currency Calculator updated info as per date : ${currencyInfo.date}`}{" "}
+            {`Currency Data last Synced on : ${currencyInfo.date}`}
           </h4>
           <div>
             <div>
-              <FormControl style={{ margin: 10, width: 220 }}>
+              <FormControl style={{ margin: 10, width: 300 }}>
                 <InputLabel id="demo-simple-select-label">
                   Input Currency
                 </InputLabel>
@@ -88,7 +102,7 @@ const HomePage = () => {
                     .sort()
                     .map((curr) => (
                       <MenuItem key={curr} value={curr}>
-                        {curr}
+                        {`${curr} - ${countryInfo[0][curr]}`}
                       </MenuItem>
                     ))}
                 </Select>
@@ -99,6 +113,7 @@ const HomePage = () => {
                 variant="outlined"
                 type="number"
                 color="secondary"
+                value={userCurrInfo.conversionAmt}
                 onChange={(e) =>
                   setUserCurrInfo({
                     ...userCurrInfo,
@@ -123,7 +138,7 @@ const HomePage = () => {
                     .sort()
                     .map((curr) => (
                       <MenuItem key={curr} value={curr}>
-                        {curr}
+                        {`${curr} - ${countryInfo[0][curr]}`}
                       </MenuItem>
                     ))}
                 </Select>
@@ -160,10 +175,9 @@ const HomePage = () => {
 
 export default HomePage;
 
-//Some Apis for use
+//Some Apis to use
 
 //http://ip-api.com/json
 //https://api.exchangeratesapi.io/latest
 //https://api.exchangeratesapi.io/latest?base=USD
 //https://api.coindesk.com/v1/bpi/currentprice.json
-//          onClick={computeConvAmt}

@@ -15,7 +15,7 @@ import {
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import "./styles.scss";
 const countryInfo = require("../raw/country_list.json");
-
+// React Component SignUp : Display a signup page and handles user signup validation
 const SignUp = () => {
   const history = useHistory();
   const [userInfo, setuserInfo] = React.useState({

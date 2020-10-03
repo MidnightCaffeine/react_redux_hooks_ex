@@ -6,6 +6,7 @@ import SignUp from "./SignUp";
 import PrivateRoute from "../components/PrivateRoute";
 import "./styles.scss";
 
+//Main : Main component, Router setup done here
 const Main = () => {
   return (
     <div className="main_container">

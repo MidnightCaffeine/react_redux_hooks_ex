@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-//import { useDispatch, useSelector } from "react-redux";
 import { Button, TextField, Paper } from "@material-ui/core";
 import "./styles.scss";
 const userData = require("../raw/user_Data.json");
 
+//Renders Login component with login validations
 const Login = () => {
   const history = useHistory();
   const [loginInfo, setloginInfo] = useState({
