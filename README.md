@@ -1,3 +1,39 @@
+
+## Basic react router with hooks (currency conversion example)
+
+The app is made to understand the router and basic hooks.
+It have simple login with mock data available in /src/raw
+It also have a fake signup form.
+Material UI is been used for different UI elements.
+
+Once login it lands to HomePage. Which is a basic currency converter,
+Takes input currency, amount and output currency from user.
+Uses Currency Convertor [API] (https://api.exchangeratesapi.io/latest)
+Logut Button to route back to login page.
+Contains basic validation in all pages
+
+
+## Some Screenshot from the app 
+
+
+
+![image info](./screenshots/Login.png)
+
+
+---------------------------------------
+
+
+![image info](./screenshots/HomePage.png)
+
+
+---------------------------------------
+
+
+![image info](./screenshots/SignUp.png)
+
+
+
+---------------------------------------
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

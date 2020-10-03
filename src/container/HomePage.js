@@ -32,8 +32,7 @@ const HomePage = () => {
   const [userCurrInfo, setUserCurrInfo] = useState({
     inputCurr: "",
     outputCurr: "",
-    conversionAmt: 0,
-    convertAmt: 0,
+    conversionAmt: 1000,
   });
 
   // set the currency information usin the API on Mount
@@ -57,11 +56,22 @@ const HomePage = () => {
   };
   return !checkEmpObj(currencyInfo) ? (
     <div>
-      <div style={{ position: "absolute", right: "0", top: "0" }}>
+      <div>
+        <h1
+          style={{
+            margin: 15,
+            color: "#ff4d82",
+            position: "absolute",
+            top: "0",
+            left: "0"
+          }}
+        >
+          Currency Convertor HomePage
+        </h1>
         <Button
           variant="contained"
           color="primary"
-          style={{ margin: 10 }}
+          style={{ margin: 10, position: "absolute", right: "0", top: "0" }}
           onClick={logout}
         >
           Logout
@@ -70,7 +80,7 @@ const HomePage = () => {
       <Paper elevation={3}>
         <div>
           <h4 style={{ margin: 15, color: "#ff4d82" }}>
-            {`Currency Calculator updated info as per date : ${currencyInfo.date}`}{" "}
+            {`Currency Data last Synced on : ${currencyInfo.date}`}
           </h4>
           <div>
             <div>
@@ -103,6 +113,7 @@ const HomePage = () => {
                 variant="outlined"
                 type="number"
                 color="secondary"
+                value={userCurrInfo.conversionAmt}
                 onChange={(e) =>
                   setUserCurrInfo({
                     ...userCurrInfo,
