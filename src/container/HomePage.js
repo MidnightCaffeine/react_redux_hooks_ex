@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 import {
   CircularProgress,
   Select,
@@ -27,6 +28,11 @@ const checkEmpObj = (obj) => {
 
 //Renders Homepage : After private Route verification through local storage, contains currency conversion and logout view
 const HomePage = () => {
+  //Get logIn from state
+  const logInData = useSelector((state) => state.logInData);
+  //Get userData from state
+  const userData = useSelector((state) => state.signup.userData);
+
   const history = useHistory();
   const [currencyInfo, setCurrencyInfo] = useState({});
   const [userCurrInfo, setUserCurrInfo] = useState({
@@ -42,32 +48,57 @@ const HomePage = () => {
     );
   }, []);
 
+  const getLoggedInData = () => {
+    const userObj = userData.reduce((acc, data) => {
+      if (data["userId"] === logInData["loggedUser"]) {
+        acc = data;
+      }
+      return acc;
+    }, {});
+    const curr = Object.keys(countryInfo[0]).find(
+      (key) => countryInfo[0][key] === userObj.country
+    );
+    return { name: userObj.name, curr: `${curr} - ${userObj.country}` };
+  };
+
   const logout = () => {
     history.push(`/`);
   };
+
   const convertAmt = () => {
     const amt = (
       (userCurrInfo.conversionAmt /
         currencyInfo.rates[userCurrInfo.inputCurr]) *
       currencyInfo.rates[userCurrInfo.outputCurr]
     ).toFixed(2);
-    console.log(" amt ", amt);
     setUserCurrInfo({ ...userCurrInfo, convertedAmt: amt });
   };
+
   return !checkEmpObj(currencyInfo) ? (
     <div>
       <div>
         <h1
           style={{
             margin: 15,
-            color: "#ff4d82",
+            color: "grey",
             position: "absolute",
             top: "0",
-            left: "0"
+            left: "0",
           }}
         >
           Currency Convertor HomePage
         </h1>
+        <h3
+          style={{
+            margin: 15,
+            color: "grey",
+            position: "center",
+          }}
+        >
+          {`Welcome ${getLoggedInData().name} | Suggested Currencey : ${
+            getLoggedInData().curr
+          }`}
+        </h3>
         <Button
           variant="contained"
           color="primary"

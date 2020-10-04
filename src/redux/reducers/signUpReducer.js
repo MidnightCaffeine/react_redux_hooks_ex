@@ -2,13 +2,13 @@ import { ADD_USER_INFO } from "../actions/actions";
 const initStateUserList = {userData : [
   {
     password: "1111",
-    name: "abc",
+    name: "john",
     userId: "abc",
     country: "India",
   },
   {
     password: "2222",
-    name: "def",
+    name: "david",
     userId: "def",
     country: "Canada",
   },

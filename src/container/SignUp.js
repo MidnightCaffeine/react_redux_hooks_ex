@@ -78,7 +78,7 @@ const SignUp = () => {
           [key]: userInfo[key],
         };
       }, {});
-    if (validInfo.validUid && validInfo.validConfPass) {
+    if (validInfo.validUid && validInfo.validConfPass && !!userInfo.name.length) {
       dispatch(addUserInfo(filteredUserInfo));
       history.push(`/`);
     }
