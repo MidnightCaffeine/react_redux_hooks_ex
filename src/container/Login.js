@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Button, TextField, Paper } from "@material-ui/core";
+import { updateUserId } from "../redux/actions/loginAction";
 import "./styles.scss";
 
 //Renders Login component with login validations
 const Login = () => {
+  //Use for all the dispatch actions
+  const dispatch = useDispatch();
+
   //Get userData from state
   const userData = useSelector((state) => state.signup.userData);
 
@@ -29,12 +33,16 @@ const Login = () => {
       validateLogin: { displayStaus: true, validated: false },
     });
     userData.forEach((data) => {
-      if (data.userId === loginInfo.userId && data.password === loginInfo.password) {
+      if (
+        data.userId === loginInfo.userId &&
+        data.password === loginInfo.password
+      ) {
         setloginInfo({
           ...loginInfo,
           validateLogin: { displayStaus: true, validated: true },
         });
         localStorage.setItem("LoginSucess", loginInfo.validateLogin.validated);
+        dispatch(updateUserId(loginInfo.userId))
         history.push("/HomePage");
       }
     });
