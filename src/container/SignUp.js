@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import {
   Select,
   MenuItem,
@@ -14,11 +15,18 @@ import {
 } from "@material-ui/core";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import "./styles.scss";
+import { addUserInfo } from "../redux/actions/signupAction";
 const countryInfo = require("../raw/country_list.json");
 // React Component SignUp : Display a signup page and handles user signup validation
 const SignUp = () => {
+  //Get userData from state
+  const userData = useSelector((state) => state.signup.userData);
+
+  //Use for all the dispatch actions
+  const dispatch = useDispatch();
+
   const history = useHistory();
-  const [userInfo, setuserInfo] = React.useState({
+  const [userInfo, setuserInfo] = useState({
     password: "",
     showPassword: false,
     confirmPass: "",
@@ -26,7 +34,10 @@ const SignUp = () => {
     userId: "",
     country: "",
   });
-
+  const [validInfo, setValidInfo] = useState({
+    validUid: false,
+    validConfPass: false,
+  });
   const handleClickShowPassword = () => {
     setuserInfo({
       ...userInfo,
@@ -38,8 +49,39 @@ const SignUp = () => {
     event.preventDefault();
   };
 
+  const handleIdChange = (e) => {
+    const uidExists = userData
+      .map((data) => data["userId"])
+      .includes(e.target.value);
+    setValidInfo({
+      ...validInfo,
+      validUid: !uidExists,
+    });
+    setuserInfo({ ...userInfo, userId: e.target.value });
+  };
+  const handleConfPassChange = (e) => {
+    setValidInfo({
+      ...validInfo,
+      validConfPass: userInfo.password === e.target.value,
+    });
+    setuserInfo({ ...userInfo, confirmPass: e.target.value });
+  };
+
   const signUp = () => {
-    history.push(`/`);
+    //Below code filter the allowed properties from userInfo Object and dispatch the same
+    const allowed = ["password", "userId", "name", "country"];
+    const filteredUserInfo = Object.keys(userInfo)
+      .filter((key) => allowed.includes(key))
+      .reduce((obj, key) => {
+        return {
+          ...obj,
+          [key]: userInfo[key],
+        };
+      }, {});
+    if (validInfo.validUid && validInfo.validConfPass) {
+      dispatch(addUserInfo(filteredUserInfo));
+      history.push(`/`);
+    }
   };
 
   return (
@@ -51,12 +93,17 @@ const SignUp = () => {
             id="Name"
             label="Enter Name"
             variant="outlined"
-            style={{ margin: 8, width: "350px" }}
+            style={{ margin: 8, width: "350px", color: "blue" }}
             onChange={(e) => setuserInfo({ ...userInfo, name: e.target.value })}
+            error={userInfo.name === ""}
+            helperText={userInfo.name === "" ? "Empty field!" : " "}
           />
         </div>
         <div>
-          <FormControl style={{ margin: 10, width: 220 }}>
+          <FormControl
+            style={{ margin: 10, width: 220 }}
+            error={userInfo.country === ""}
+          >
             <InputLabel>Select Country</InputLabel>
             <Select
               value={userInfo.country}
@@ -80,8 +127,14 @@ const SignUp = () => {
             label="Enter UserId"
             variant="outlined"
             style={{ margin: 8, width: "238px" }}
-            onChange={(e) =>
-              setuserInfo({ ...userInfo, userId: e.target.value })
+            onChange={handleIdChange}
+            error={userInfo.userId === "" && !validInfo.validUid}
+            helperText={
+              userInfo.userId === ""
+                ? "Empty field!"
+                : validInfo.validUid
+                ? " "
+                : "User Id already Taken "
             }
           />
         </div>
@@ -117,8 +170,14 @@ const SignUp = () => {
             type="password"
             variant="outlined"
             style={{ margin: 8, width: "238px" }}
-            onChange={(e) =>
-              setuserInfo({ ...userInfo, confirmPass: e.target.value })
+            onChange={handleConfPassChange}
+            error={userInfo.confirmPass === "" && !validInfo.validConfPass}
+            helperText={
+              userInfo.confirmPass === ""
+                ? "Empty field!"
+                : validInfo.validConfPass
+                ? ""
+                : "Password and Confirm Pass Doesn’t Match"
             }
           />
         </div>
@@ -126,14 +185,10 @@ const SignUp = () => {
           variant="contained"
           color="primary"
           style={{ margin: 10 }}
-          disabled={userInfo.password !== userInfo.confirmPass}
           onClick={signUp}
         >
           SignUp
         </Button>
-        {userInfo.password !== userInfo.confirmPass && (
-          <p>Mismatch in password and confirm Password</p>
-        )}
       </Paper>
     </div>
   );

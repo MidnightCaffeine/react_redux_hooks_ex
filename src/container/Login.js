@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { Button, TextField, Paper } from "@material-ui/core";
 import "./styles.scss";
-const userData = require("../raw/user_Data.json");
 
 //Renders Login component with login validations
 const Login = () => {
+  //Get userData from state
+  const userData = useSelector((state) => state.signup.userData);
+
   const history = useHistory();
   const [loginInfo, setloginInfo] = useState({
     userId: "",
@@ -26,7 +29,7 @@ const Login = () => {
       validateLogin: { displayStaus: true, validated: false },
     });
     userData.forEach((data) => {
-      if (data.uid === loginInfo.userId && data.pass === loginInfo.password) {
+      if (data.userId === loginInfo.userId && data.password === loginInfo.password) {
         setloginInfo({
           ...loginInfo,
           validateLogin: { displayStaus: true, validated: true },
