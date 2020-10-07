@@ -31,19 +31,19 @@
 ---------------------------------------
 
 
-![image info](./screenshots/SignUp.png)
+![image info](./screenshots/SignUpTest.png)
 
 
 ---------------------------------------
 
 
-![image info](./screenshots/Login.png)
+![image info](./screenshots/LoginTest.png)
 
 
 ---------------------------------------
 
 
-![image info](./screenshots/HomePage.png)
+![image info](./screenshots/HomePageTest.png)
 
 
 ---------------------------------------
