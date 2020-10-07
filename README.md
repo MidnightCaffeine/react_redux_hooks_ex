@@ -10,7 +10,7 @@
 * UI elements used using material UI.
 * Some inline styles are there. (to be moved to scss)
 -------------------------------------
-* From HomePage you need to signup. Once signup done you can login.
+* From login page you need to signup. Once signup done you can login.
 * After login it lands to HomePage. Which is a basic currency converter,
 * Takes input currency, amount to be converted and output currency from user.
 * Uses Currency Convertor [API] (https://api.exchangeratesapi.io/latest)
