@@ -31,7 +31,7 @@
 ---------------------------------------
 
 
-![image info](./screenshots/Signup.png)
+![image info](./screenshots/SignUp.png)
 
 
 ---------------------------------------
